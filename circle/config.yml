@@ -1,0 +1,98 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@2.4.0
+
+executors:
+  docker-executor:
+    docker:
+      - image: cimg/base:stable
+
+jobs:
+
+  build-and-push:
+    executor: docker-executor
+
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Login to Docker Hub
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      # -------- USER SERVICE --------
+      - run:
+          name: Build User Service Image
+          command: |
+            docker build -t $DOCKER_USERNAME/user-service:${CIRCLE_SHA1} ./user-service
+            docker push $DOCKER_USERNAME/user-service:${CIRCLE_SHA1}
+
+      # -------- PRODUCT SERVICE --------
+      - run:
+          name: Build Product Service Image
+          command: |
+            docker build -t $DOCKER_USERNAME/product-service:${CIRCLE_SHA1} ./product-service
+            docker push $DOCKER_USERNAME/product-service:${CIRCLE_SHA1}
+
+      # -------- ORDER SERVICE --------
+      - run:
+          name: Build Order Service Image
+          command: |
+            docker build -t $DOCKER_USERNAME/order-service:${CIRCLE_SHA1} ./order-service
+            docker push $DOCKER_USERNAME/order-service:${CIRCLE_SHA1}
+
+      # -------- FRONTEND --------
+      - run:
+          name: Build Frontend Image
+          command: |
+            docker build -t $DOCKER_USERNAME/frontend:${CIRCLE_SHA1} ./frontend
+            docker push $DOCKER_USERNAME/frontend:${CIRCLE_SHA1}
+
+  update-gitops:
+    executor: docker-executor
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Git
+          command: sudo apt-get update && sudo apt-get install -y git
+
+      - run:
+          name: Clone GitOps Repo
+          command: |
+            git clone https://${GITHUB_TOKEN}@github.com/kuruvauday777-sudo/microservices-platform
+
+      - run:
+          name: Update Image Tags in DEV Overlay
+          command: |
+            cd microservices-gitops/overlays/dev
+
+            sed -i "s|user-service:.*|user-service:${CIRCLE_SHA1}|g" patches.yaml
+            sed -i "s|product-service:.*|product-service:${CIRCLE_SHA1}|g" patches.yaml
+            sed -i "s|order-service:.*|order-service:${CIRCLE_SHA1}|g" patches.yaml
+            sed -i "s|frontend:.*|frontend:${CIRCLE_SHA1}|g" patches.yaml
+
+      - run:
+          name: Commit and Push Changes
+          command: |
+            cd microservices-gitops
+            git config user.email "ci@circleci.com"
+            git config user.name "CircleCI Bot"
+
+            git add .
+            git commit -m "Update images to ${CIRCLE_SHA1}"
+            git push origin main
+
+workflows:
+  version: 2
+
+  gitops-pipeline:
+    jobs:
+      - build-and-push
+      - update-gitops:
+          requires:
+            - build-and-push
