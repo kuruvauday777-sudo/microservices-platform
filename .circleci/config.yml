@@ -27,28 +27,28 @@ jobs:
       - run:
           name: Build User Service Image
           command: |
-            docker build -t $DOCKER_USERNAME/user-service:${CIRCLE_SHA1} .services/user-service
+            docker build -t $DOCKER_USERNAME/user-service:${CIRCLE_SHA1} ./services/user-service
             docker push $DOCKER_USERNAME/user-service:${CIRCLE_SHA1}
 
       # -------- PRODUCT SERVICE --------
       - run:
           name: Build Product Service Image
           command: |
-            docker build -t $DOCKER_USERNAME/product-service:${CIRCLE_SHA1} .services/product-service
+            docker build -t $DOCKER_USERNAME/product-service:${CIRCLE_SHA1} ./services/product-service
             docker push $DOCKER_USERNAME/product-service:${CIRCLE_SHA1}
 
       # -------- ORDER SERVICE --------
       - run:
           name: Build Order Service Image
           command: |
-            docker build -t $DOCKER_USERNAME/order-service:${CIRCLE_SHA1} .services/order-service
+            docker build -t $DOCKER_USERNAME/order-service:${CIRCLE_SHA1} ./services/order-service
             docker push $DOCKER_USERNAME/order-service:${CIRCLE_SHA1}
 
       # -------- FRONTEND --------
       - run:
           name: Build Frontend Image
           command: |
-            docker build -t $DOCKER_USERNAME/frontend:${CIRCLE_SHA1} .services/frontend
+            docker build -t $DOCKER_USERNAME/frontend:${CIRCLE_SHA1} ./services/frontend
             docker push $DOCKER_USERNAME/frontend:${CIRCLE_SHA1}
 
   update-gitops:
