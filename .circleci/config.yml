@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Clone GitOps Repo
           command: |
-            git clone https://${GITHUB_TOKEN}@github.com/kuruvauday777-sudo/microservices-platform
+            git clone https://${GH_TOKEN}}@github.com/kuruvauday777-sudo/microservices-platform
 
       - run:
           name: Update Image Tags in DEV Overlay
