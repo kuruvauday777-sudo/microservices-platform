@@ -84,10 +84,11 @@ jobs:
             git push https://x-access-token:${GH_TOKEN}@github.com/kuruvauday777-sudo/microservices-platform.git main
 
 workflows:
-   version: 2
-   gitops-pipeline:
-   jobs:
-      - build-and-push
-      - update-gitops:
-          requires:
-             - build-and-push
+  version: 2
+
+  gitops-pipeline:
+    jobs:
+      build-and-push: {}
+      update-gitops:
+        requires:
+          - build-and-push
