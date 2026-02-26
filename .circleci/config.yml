@@ -9,10 +9,8 @@ executors:
       - image: cimg/base:stable
 
 jobs:
-
   build-and-push:
     executor: docker-executor
-
     steps:
       - checkout
 
@@ -53,18 +51,19 @@ jobs:
 
   update-gitops:
     executor: docker-executor
-
     steps:
-      - checkout
+
 
       - run:
           name: Install Git
-          command: sudo apt-get update && sudo apt-get install -y git
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y git
 
       - run:
-          name: Clone GitOps Repo
+          name: Clone GitOps Repo using HTTPS + PAT
           command: |
-            git clone https://github.com/kuruvauday777-sudo/microservices-platform.git
+            git clone https://x-access-token:${CI_GH_PAT}@github.com/kuruvauday777-sudo/microservices-platform.git
       - run:
           name: Update Image Tags in DEV Overlay
           command: |
@@ -83,12 +82,12 @@ jobs:
             git config user.name "CircleCI Bot"
 
             git add .
-            git commit -m "Update images to ${CIRCLE_SHA1}"
-            git push origin master
+            git commit -m "Update images to ${CIRCLE_SHA1}" || echo "No changes to commit"
+
+            git push https://x-access-token:${CI_GH_PAT}@github.com/kuruvauday777-sudo/microservices-platform.git master
 
 workflows:
   version: 2
-
   gitops-pipeline:
     jobs:
       - build-and-push
