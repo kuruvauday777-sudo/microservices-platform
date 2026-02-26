@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Clone GitOps Repo
           command: |
-            git clone https://@github.com/uday/microservices-gitops.git
+            git clone https://@github.com/kuruvauday/microservices-platform.git
             cd microservices-gitops
 
       - run:
