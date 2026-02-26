@@ -9,3 +9,14 @@ spec:
       containers:
       - name: user-service
         image: kuruvaudayuday/user-service:c59089654fd13028e31ee0f9d4f05108b5f866c7
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  template:
+    spec:
+      containers:
+        - name: frontend
+          image: kuruvaday/frontend:<LATEST_SHA>
