@@ -70,7 +70,7 @@ jobs:
       - run:
           name: Update Image Tags in DEV Overlay
           command: |
-            cd microservices-platform/overlays/dev
+            cd microservices-platform/k8s/overlays/dev
 
             sed -i "s|user-service:.*|user-service:${CIRCLE_SHA1}|g" patches.yaml
             sed -i "s|product-service:.*|product-service:${CIRCLE_SHA1}|g" patches.yaml
