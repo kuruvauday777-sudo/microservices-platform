@@ -9,63 +9,57 @@ executors:
       - image: cimg/base:stable
 
 jobs:
+   build-and-push:
+     executor: docker-executor
+     steps:
+       - checkout
 
-  build-and-push:
-    executor: docker-executor
+       - setup_remote_docker
 
-    steps:
-      - checkout
-
-      - setup_remote_docker
-
-      - run:
+       - run:
           name: Login to Docker Hub
           command: |
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-      # -------- USER SERVICE --------
-      - run:
+       - run:
           name: Build User Service Image
           command: |
             docker build -t $DOCKER_USERNAME/user-service:${CIRCLE_SHA1} ./user-service
             docker push $DOCKER_USERNAME/user-service:${CIRCLE_SHA1}
 
-      # -------- PRODUCT SERVICE --------
-      - run:
+       - run:
           name: Build Product Service Image
           command: |
             docker build -t $DOCKER_USERNAME/product-service:${CIRCLE_SHA1} ./product-service
             docker push $DOCKER_USERNAME/product-service:${CIRCLE_SHA1}
 
-      # -------- ORDER SERVICE --------
-      - run:
+       - run:
           name: Build Order Service Image
           command: |
             docker build -t $DOCKER_USERNAME/order-service:${CIRCLE_SHA1} ./order-service
             docker push $DOCKER_USERNAME/order-service:${CIRCLE_SHA1}
 
-      # -------- FRONTEND --------
-      - run:
+       - run:
           name: Build Frontend Image
           command: |
             docker build -t $DOCKER_USERNAME/frontend:${CIRCLE_SHA1} ./frontend
             docker push $DOCKER_USERNAME/frontend:${CIRCLE_SHA1}
 
-  update-gitops:
-    executor: docker-executor
-
-    steps:
-      - checkout
+   update-gitops:
+     executor: docker-executor
+     steps:
+      # ❌ NO checkout here (avoids SSH)
 
       - run:
           name: Install Git
-          command: sudo apt-get update && sudo apt-get install -y git
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y git
 
       - run:
-          name: Clone GitOps Repo
+          name: Clone GitOps Repo using HTTPS + PAT
           command: |
-            git clone https://${GH_TOKEN}@github.com/kuruvaday777-sudo/microservices-platform.git
-            cd microservices-platform
+            git clone https://x-access-token:${GH_TOKEN}@github.com/kuruvauday777-sudo/microservices-platform.git
 
       - run:
           name: Update Image Tags in DEV Overlay
@@ -85,15 +79,15 @@ jobs:
             git config user.name "CircleCI Bot"
 
             git add .
-            git commit -m "Update images to ${CIRCLE_SHA1}"
-            git push origin main
+            git commit -m "Update images to ${CIRCLE_SHA1}" || echo "No changes to commit"
+
+            git push https://x-access-token:${GH_TOKEN}@github.com/kuruvauday777-sudo/microservices-platform.git main
 
 workflows:
-  version: 2
-
-  gitops-pipeline:
-    jobs:
+   version: 2
+   gitops-pipeline:
+   jobs:
       - build-and-push
       - update-gitops:
           requires:
-            - build-and-push
+             - build-and-push
