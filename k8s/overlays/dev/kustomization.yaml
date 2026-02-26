@@ -3,3 +3,4 @@ resources:
 
 patchesStrategicMerge:
   - patches.yaml
+  - frontend-patch.yaml
