@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: kuruvaudayuday/user-service:bd7948e4b3a32d6cdd3fd057ea6953687d57dd5d
+        image: kuruvaudayuday/user-service:332712e723f5a6c3ddf681da6041a7eadeffe53f
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,4 +19,4 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: kuruvaday/frontend:bd7948e4b3a32d6cdd3fd057ea6953687d57dd5d
+          image: kuruvaday/frontend:332712e723f5a6c3ddf681da6041a7eadeffe53f
