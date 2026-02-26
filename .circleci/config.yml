@@ -65,12 +65,12 @@ jobs:
           name: Clone GitOps Repo
           command: |
             git clone https://github.com/kuruvauday777-sudo/microservices-platform.git
-            cd microservices-gitops
+            cd microservices-platform
 
       - run:
           name: Update Image Tags in DEV Overlay
           command: |
-            cd microservices-gitops/overlays/dev
+            cd microservices-platform/overlays/dev
 
             sed -i "s|user-service:.*|user-service:${CIRCLE_SHA1}|g" patches.yaml
             sed -i "s|product-service:.*|product-service:${CIRCLE_SHA1}|g" patches.yaml
@@ -80,7 +80,7 @@ jobs:
       - run:
           name: Commit and Push Changes
           command: |
-            cd microservices-gitops
+            cd microservices-platform
             git config user.email "ci@circleci.com"
             git config user.name "CircleCI Bot"
 
