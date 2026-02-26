@@ -28,24 +28,28 @@ jobs:
        - run:
           name: Build User Service Image
           command: |
+            cd microservices-platform
             docker build -t $DOCKER_USERNAME/user-service:${CIRCLE_SHA1} ./services/user-service
             docker push $DOCKER_USERNAME/user-service:${CIRCLE_SHA1}
 
        - run:
           name: Build Product Service Image
           command: |
+            cd microservices-platform
             docker build -t $DOCKER_USERNAME/product-service:${CIRCLE_SHA1} ./services/product-service
             docker push $DOCKER_USERNAME/product-service:${CIRCLE_SHA1}
 
        - run:
           name: Build Order Service Image
           command: |
+            cd microservices-platform
             docker build -t $DOCKER_USERNAME/order-service:${CIRCLE_SHA1} ./services/order-service
             docker push $DOCKER_USERNAME/order-service:${CIRCLE_SHA1}
 
        - run:
           name: Build Frontend Image
           command: |
+            cd microservices-platform
             docker build -t $DOCKER_USERNAME/frontend:${CIRCLE_SHA1} ./services/frontend
             docker push $DOCKER_USERNAME/frontend:${CIRCLE_SHA1}
 
