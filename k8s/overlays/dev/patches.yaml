@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: kuruvaudayuday/user-service:222b8bcad7e15988dcbb3c196c34e2c9a1af5b3e
+        image: kuruvaudayuday/user-service:d3fcf23a4d1a29c78730be252b7f9949e060db87
