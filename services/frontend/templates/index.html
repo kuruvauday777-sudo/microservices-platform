@@ -1,91 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Login Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Microservices Frontend</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.login-container {
-  background: #ffffff;
-  padding: 30px;
-  width: 320px;
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
+    .container {
+      background: #fff;
+      width: 360px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
 
-.login-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
 
-.input-group {
-  margin-bottom: 15px;
-}
+    label {
+      font-size: 14px;
+      color: #555;
+    }
 
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+    }
 
-.input-group input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  outline: none;
-}
+    input:focus {
+      border-color: #667eea;
+    }
 
-.input-group input:focus {
-  border-color: #667eea;
-}
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #667eea;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background: #667eea;
-  border: none;
-  color: white;
-  font-size: 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+    button:hover {
+      background: #5a67d8;
+    }
 
-button:hover {
-  background: #5563c1;
-}
+    .footer {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+    }
   </style>
 </head>
+
 <body>
-  <div class="login-container">
-    <h2>Login</h2>
+  <div class="container">
+    <h2>Frontend Login</h2>
 
     <form>
-      <div class="input-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter username" required />
-      </div>
+      <label>Email</label>
+      <input type="email" placeholder="Enter your email" required />
 
-      <div class="input-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter password" required />
-      </div>
+      <label>Password</label>
+      <input type="password" placeholder="Enter your password" required />
 
       <button type="submit">Login</button>
     </form>
 
+    <div class="footer">
+      Microservices Platform © 2026
+    </div>
   </div>
-
-</body>
-</html>
-
+ </body>
+   </html>
